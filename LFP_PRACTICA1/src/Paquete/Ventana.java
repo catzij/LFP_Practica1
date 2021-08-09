@@ -1,13 +1,36 @@
 
 package Paquete;
 
+import java.util.StringTokenizer;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 public class Ventana extends javax.swing.JFrame {
+    
+    private String[] cadenafinal;
+    
+    private JTextField[][] muestra;
+    private JTextField[][] simbolos=new JTextField[1][2] ;    
+    private int contador=0;
+    private int inicio=0;
+    private int posY=35;
 
     /**
      * Creates new form Ventana
      */
     public Ventana() {
         initComponents();
+        
+        simbolos[0][0]= new JTextField();
+        simbolos[0][1]= new JTextField();
+        PANEL1.add(simbolos[0][0]);
+        PANEL1.add(simbolos[0][1]);
+        simbolos[0][0].setBorder(null);
+        simbolos[0][0].setBackground(null);
+        simbolos[0][1].setBorder(null);
+        simbolos[0][1].setBackground(null);
+        simbolos[0][0].setBounds(15, 15, 72, 25);
+        simbolos[0][1].setBounds(90, 15, 72, 25);
     }
 
     /**
@@ -23,29 +46,50 @@ public class Ventana extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        PANEL1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("ACEPTAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setText("Ingrese");
 
         jTextField1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
 
+        javax.swing.GroupLayout PANEL1Layout = new javax.swing.GroupLayout(PANEL1);
+        PANEL1.setLayout(PANEL1Layout);
+        PANEL1Layout.setHorizontalGroup(
+            PANEL1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 433, Short.MAX_VALUE)
+        );
+        PANEL1Layout.setVerticalGroup(
+            PANEL1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 205, Short.MAX_VALUE)
+        );
+
+        jScrollPane2.setViewportView(PANEL1);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -57,7 +101,9 @@ public class Ventana extends javax.swing.JFrame {
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap(232, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -65,13 +111,116 @@ public class Ventana extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+                LimpiarArreglo();
+                inicio=1;
+                CadenaLeida(jTextField1.getText());
+      if (!jTextField1.getText().equalsIgnoreCase("")) {
+                
+            }else{
+            JOptionPane.showMessageDialog(this, "VACIO, INGRESE ALGO");
+            }
+     
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+        public void CadenaLeida(String cadena){
+        StringTokenizer token=new StringTokenizer(cadena, " ");
+        int conta=token.countTokens();
+        contador=0;
+        posY=35;
+        muestra= new JTextField[conta][2];
+        cadenafinal = new String[conta];
+        for (int i = 0; i < conta; i++) {
+            muestra[contador][0]= new JTextField();
+            muestra[contador][1]= new JTextField();
+            muestra[contador][1].setBorder(null);
+            muestra[contador][1].setBackground(null);
+            muestra[contador][0].setBorder(null);
+            muestra[contador][0].setBackground(null);
+            cadenafinal[i]=token.nextToken();
+            AnalizarToken(cadenafinal[i]);
+        }
+    }
+    
+    public void AnalizarToken(String palabra){
+        char[] arreglo = palabra.toCharArray();
+        for (int i = 0; i < palabra.length(); i++) {
+            if(arreglo[i]=='[' || arreglo[i]==']' || arreglo[i]==';' || arreglo[i]==','){
+                Escribirsimbolos(arreglo[i]);
+            }
+        }
+        if (Character.getNumericValue(arreglo[0])<10) {
+            DiferenciaDecimal(palabra);
+        }else if (Character.getNumericValue(arreglo[0])>=10 && Character.getNumericValue(arreglo[0])<36) {
+            CrearLabel(palabra, "id");
+        }
+    }
+    
+    public void DiferenciaDecimal(String Palabra){
+        char[] arreglo = Palabra.toCharArray();
+        boolean entero=true;
+        boolean error = false;
+        for (int i = 0; i < Palabra.length(); i++) {
+            if (Character.getNumericValue(arreglo[i])>=10) {
+                CrearLabel(Palabra, "error");
+                error = true;
+                i=Palabra.length()-1;
+            }else if(Character.getNumericValue(arreglo[i])==-1 && i>1){
+                
+                if (Character.getNumericValue(arreglo[i-1])<0 || Character.getNumericValue(arreglo[i-1])>9) {
+                    entero=false;
+                }
+                
+            }
+        }
+        if(entero==false && error==false) {
+            CrearLabel(Palabra, "decimal");
+        }else if(entero==true && error==false){
+            CrearLabel(Palabra, "Entero");
+        }
+    }
+    
+    public void LimpiarArreglo(){
+        if (inicio!=0) {
+            for (int i = 0; i < muestra.length; i++) {
+                for (int j = 0; j < 2; j++) {
+                    
+                    PANEL1.remove(muestra[i][j]);
+                }
+            }
+        }
+        jScrollPane2.repaint();
+    }
+    
+    public void CrearLabel(String Palabra, String tipo){
+        for (Tipo t:Tipo.values()){
+            if (t.getClasificacion().equalsIgnoreCase(tipo)) {
+                muestra[contador][0].setText(t.getClasificacion());
+            }
+        }
+        muestra[contador][0].setBounds(15, posY, 72, 25);
+        muestra[contador][1].setBounds(90, posY, 75, 25);
+        muestra[contador][1].setText(Palabra);
+        PANEL1.add(muestra[contador][0]);
+        PANEL1.add(muestra[contador][1]);
+        contador++;
+        posY+=25;
+    }
+    
+    public void Escribirsimbolos(char simbo){
+        simbolos[0][0].setText(Tipo.SYMBOLO.getClasificacion());
+        simbolos[0][1].setText(""+simbo);
+    }
    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel PANEL1;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
